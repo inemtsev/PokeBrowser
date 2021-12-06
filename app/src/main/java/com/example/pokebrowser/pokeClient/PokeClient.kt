@@ -23,7 +23,6 @@ class PokeClient {
         pokeClientService = retrofit.create(PokeClientService::class.java)
     }
 
-
     suspend fun getPokemonList(number: Int, offset: Int): GetPokemonListResponse? {
         val result = pokeClientService.getPokemonRange(number, offset)
 

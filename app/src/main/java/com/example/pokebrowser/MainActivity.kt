@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.pokebrowser.composable.PokeBrowser
+import com.example.pokebrowser.composable.PokeViewer
 import com.example.pokebrowser.composable.SplashScreen
 import com.example.pokebrowser.ui.theme.PokeBrowserTheme
 
@@ -46,5 +47,6 @@ fun Navigation(vm: MainActivityViewModel) {
     NavHost(navController = navController, startDestination = "splash-screen") {
         composable(route = "splash-screen") { SplashScreen(navController = navController, isInitLoading) }
         composable(route = "main-screen") { PokeBrowser(navController = navController) }
+        composable(route = "view-screen") { PokeViewer(navController = navController) }
     }
 }
