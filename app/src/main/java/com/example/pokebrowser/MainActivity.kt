@@ -4,15 +4,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.pokebrowser.composable.PokeBrowser
+import com.example.pokebrowser.composable.SplashScreen
 import com.example.pokebrowser.ui.theme.PokeBrowserTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,7 +32,7 @@ class MainActivity : ComponentActivity() {
             PokeBrowserTheme {
                 Text(text = "Gotta catch'em all!", Modifier.padding(8.dp))
                 Surface(color = MaterialTheme.colors.background) {
-                    PokeBrowserContent()
+                    Navigation(vm)
                 }
             }
         }
@@ -35,16 +40,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun PokeBrowserContent() {
-    LazyColumn() {
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    PokeBrowserTheme {
-        Greeting("Android")
+fun Navigation(vm: MainActivityViewModel) {
+    val navController = rememberNavController()
+    val isInitLoading by vm.isLoadingInit.observeAsState()
+    NavHost(navController = navController, startDestination = "splash-screen") {
+        composable(route = "splash-screen") { SplashScreen(navController = navController, isInitLoading) }
+        composable(route = "main-screen") { PokeBrowser(navController = navController) }
     }
 }

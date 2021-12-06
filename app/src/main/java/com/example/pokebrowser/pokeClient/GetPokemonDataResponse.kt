@@ -1,320 +1,613 @@
-package com.example.pokebrowser.pokeClient
 
+import com.squareup.moshi.JsonClass
+
+import com.squareup.moshi.Json
+@JsonClass(generateAdapter = true)
 data class GetPokemonDataResponse(
+    @Json(name = "abilities")
     val abilities: List<Ability>,
-    val base_experience: Int,
+    @Json(name = "base_experience")
+    val baseExperience: Int,
+    @Json(name = "forms")
     val forms: List<Form>,
-    val game_indices: List<GameIndice>,
+    @Json(name = "game_indices")
+    val gameIndices: List<GameIndice>,
+    @Json(name = "height")
     val height: Int,
-    val held_items: List<Any>,
+    @Json(name = "held_items")
+    val heldItems: List<HeldItem>,
+    @Json(name = "id")
     val id: Int,
-    val is_default: Boolean,
-    val location_area_encounters: String,
+    @Json(name = "is_default")
+    val isDefault: Boolean,
+    @Json(name = "location_area_encounters")
+    val locationAreaEncounters: String,
+    @Json(name = "moves")
     val moves: List<Move>,
+    @Json(name = "name")
     val name: String,
+    @Json(name = "order")
     val order: Int,
-    val past_types: List<Any>,
+    @Json(name = "past_types")
+    val pastTypes: List<Any>,
+    @Json(name = "species")
     val species: Species,
+    @Json(name = "sprites")
     val sprites: Sprites,
+    @Json(name = "stats")
     val stats: List<Stat>,
+    @Json(name = "types")
     val types: List<Type>,
+    @Json(name = "weight")
     val weight: Int
-) {
-    data class Ability(
-        val ability: Ability,
-        val is_hidden: Boolean,
-        val slot: Int
-    ) {
-        data class Ability(
-            val name: String,
-            val url: String
-        )
-    }
+)
 
-    data class Form(
-        val name: String,
-        val url: String
-    )
+@JsonClass(generateAdapter = true)
+data class Ability(
+    @Json(name = "ability")
+    val ability: AbilityX,
+    @Json(name = "is_hidden")
+    val isHidden: Boolean,
+    @Json(name = "slot")
+    val slot: Int
+)
 
-    data class GameIndice(
-        val game_index: Int,
-        val version: Version
-    ) {
-        data class Version(
-            val name: String,
-            val url: String
-        )
-    }
+@JsonClass(generateAdapter = true)
+data class Form(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)
 
-    data class Move(
-        val move: Move,
-        val version_group_details: List<VersionGroupDetail>
-    ) {
-        data class Move(
-            val name: String,
-            val url: String
-        )
+@JsonClass(generateAdapter = true)
+data class GameIndice(
+    @Json(name = "game_index")
+    val gameIndex: Int,
+    @Json(name = "version")
+    val version: Version
+)
 
-        data class VersionGroupDetail(
-            val level_learned_at: Int,
-            val move_learn_method: MoveLearnMethod,
-            val version_group: VersionGroup
-        ) {
-            data class MoveLearnMethod(
-                val name: String,
-                val url: String
-            )
+@JsonClass(generateAdapter = true)
+data class HeldItem(
+    @Json(name = "item")
+    val item: Item,
+    @Json(name = "version_details")
+    val versionDetails: List<VersionDetail>
+)
 
-            data class VersionGroup(
-                val name: String,
-                val url: String
-            )
-        }
-    }
+@JsonClass(generateAdapter = true)
+data class Move(
+    @Json(name = "move")
+    val move: MoveX,
+    @Json(name = "version_group_details")
+    val versionGroupDetails: List<VersionGroupDetail>
+)
 
-    data class Species(
-        val name: String,
-        val url: String
-    )
+@JsonClass(generateAdapter = true)
+data class Species(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)
 
-    data class Sprites(
-        val back_default: String,
-        val back_female: Any,
-        val back_shiny: String,
-        val back_shiny_female: Any,
-        val front_default: String,
-        val front_female: Any,
-        val front_shiny: String,
-        val front_shiny_female: Any,
-        val other: Other,
-        val versions: Versions
-    ) {
-        data class Other(
-            val dream_world: DreamWorld,
-            val official-artwork: OfficialArtwork
-        ) {
-            data class DreamWorld(
-                val front_default: String,
-                val front_female: Any
-            )
+@JsonClass(generateAdapter = true)
+data class Sprites(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_female")
+    val backFemale: Any,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "back_shiny_female")
+    val backShinyFemale: Any,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_female")
+    val frontShinyFemale: Any,
+    @Json(name = "other")
+    val other: Other,
+    @Json(name = "versions")
+    val versions: Versions
+)
 
-            data class OfficialArtwork(
-                val front_default: String
-            )
-        }
+@JsonClass(generateAdapter = true)
+data class Stat(
+    @Json(name = "base_stat")
+    val baseStat: Int,
+    @Json(name = "effort")
+    val effort: Int,
+    @Json(name = "stat")
+    val stat: StatX
+)
 
-        data class Versions(
-            val generation-i: GenerationI,
-            val generation-ii: GenerationIi,
-            val generation-iii: GenerationIii,
-            val generation-iv: GenerationIv,
-            val generation-v: GenerationV,
-            val generation-vi: GenerationVi,
-            val generation-vii: GenerationVii,
-            val generation-viii: GenerationViii
-        ) {
-            data class GenerationI(
-                val red-blue: RedBlue,
-                val yellow: Yellow
-            ) {
-                data class RedBlue(
-                    val back_default: String,
-                    val back_gray: String,
-                    val front_default: String,
-                    val front_gray: String
-                )
+@JsonClass(generateAdapter = true)
+data class Type(
+    @Json(name = "slot")
+    val slot: Int,
+    @Json(name = "type")
+    val type: TypeX
+)
 
-                data class Yellow(
-                    val back_default: String,
-                    val back_gray: String,
-                    val front_default: String,
-                    val front_gray: String
-                )
-            }
+@JsonClass(generateAdapter = true)
+data class AbilityX(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)
 
-            data class GenerationIi(
-                val crystal: Crystal,
-                val gold: Gold,
-                val silver: Silver
-            ) {
-                data class Crystal(
-                    val back_default: String,
-                    val back_shiny: String,
-                    val front_default: String,
-                    val front_shiny: String
-                )
+@JsonClass(generateAdapter = true)
+data class Version(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)
 
-                data class Gold(
-                    val back_default: String,
-                    val back_shiny: String,
-                    val front_default: String,
-                    val front_shiny: String
-                )
+@JsonClass(generateAdapter = true)
+data class Item(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)
 
-                data class Silver(
-                    val back_default: String,
-                    val back_shiny: String,
-                    val front_default: String,
-                    val front_shiny: String
-                )
-            }
+@JsonClass(generateAdapter = true)
+data class VersionDetail(
+    @Json(name = "rarity")
+    val rarity: Int,
+    @Json(name = "version")
+    val version: VersionX
+)
 
-            data class GenerationIii(
-                val emerald: Emerald,
-                val firered-leafgreen: FireredLeafgreen,
-                val ruby-sapphire: RubySapphire
-            ) {
-                data class Emerald(
-                    val front_default: String,
-                    val front_shiny: String
-                )
+@JsonClass(generateAdapter = true)
+data class VersionX(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)
 
-                data class FireredLeafgreen(
-                    val back_default: String,
-                    val back_shiny: String,
-                    val front_default: String,
-                    val front_shiny: String
-                )
+@JsonClass(generateAdapter = true)
+data class MoveX(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)
 
-                data class RubySapphire(
-                    val back_default: String,
-                    val back_shiny: String,
-                    val front_default: String,
-                    val front_shiny: String
-                )
-            }
+@JsonClass(generateAdapter = true)
+data class VersionGroupDetail(
+    @Json(name = "level_learned_at")
+    val levelLearnedAt: Int,
+    @Json(name = "move_learn_method")
+    val moveLearnMethod: MoveLearnMethod,
+    @Json(name = "version_group")
+    val versionGroup: VersionGroup
+)
 
-            data class GenerationIv(
-                val diamond-pearl: DiamondPearl,
-                val heartgold-soulsilver: HeartgoldSoulsilver,
-                val platinum: Platinum
-            ) {
-                data class DiamondPearl(
-                    val back_default: String,
-                    val back_female: Any,
-                    val back_shiny: String,
-                    val back_shiny_female: Any,
-                    val front_default: String,
-                    val front_female: Any,
-                    val front_shiny: String,
-                    val front_shiny_female: Any
-                )
+@JsonClass(generateAdapter = true)
+data class MoveLearnMethod(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)
 
-                data class HeartgoldSoulsilver(
-                    val back_default: String,
-                    val back_female: Any,
-                    val back_shiny: String,
-                    val back_shiny_female: Any,
-                    val front_default: String,
-                    val front_female: Any,
-                    val front_shiny: String,
-                    val front_shiny_female: Any
-                )
+@JsonClass(generateAdapter = true)
+data class VersionGroup(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)
 
-                data class Platinum(
-                    val back_default: String,
-                    val back_female: Any,
-                    val back_shiny: String,
-                    val back_shiny_female: Any,
-                    val front_default: String,
-                    val front_female: Any,
-                    val front_shiny: String,
-                    val front_shiny_female: Any
-                )
-            }
+@JsonClass(generateAdapter = true)
+data class Other(
+    @Json(name = "dream_world")
+    val dreamWorld: DreamWorld,
+    @Json(name = "home")
+    val home: Home,
+    @Json(name = "official-artwork")
+    val officialArtwork: OfficialArtwork
+)
 
-            data class GenerationV(
-                val black-white: BlackWhite
-            ) {
-                data class BlackWhite(
-                    val animated: Animated,
-                    val back_default: String,
-                    val back_female: Any,
-                    val back_shiny: String,
-                    val back_shiny_female: Any,
-                    val front_default: String,
-                    val front_female: Any,
-                    val front_shiny: String,
-                    val front_shiny_female: Any
-                ) {
-                    data class Animated(
-                        val back_default: String,
-                        val back_female: Any,
-                        val back_shiny: String,
-                        val back_shiny_female: Any,
-                        val front_default: String,
-                        val front_female: Any,
-                        val front_shiny: String,
-                        val front_shiny_female: Any
-                    )
-                }
-            }
+@JsonClass(generateAdapter = true)
+data class Versions(
+    @Json(name = "generation-i")
+    val generationI: GenerationI,
+    @Json(name = "generation-ii")
+    val generationIi: GenerationIi,
+    @Json(name = "generation-iii")
+    val generationIii: GenerationIii,
+    @Json(name = "generation-iv")
+    val generationIv: GenerationIv,
+    @Json(name = "generation-v")
+    val generationV: GenerationV,
+    @Json(name = "generation-vi")
+    val generationVi: GenerationVi,
+    @Json(name = "generation-vii")
+    val generationVii: GenerationVii,
+    @Json(name = "generation-viii")
+    val generationViii: GenerationViii
+)
 
-            data class GenerationVi(
-                val omegaruby-alphasapphire: OmegarubyAlphasapphire,
-                val x-y: XY
-            ) {
-                data class OmegarubyAlphasapphire(
-                    val front_default: String,
-                    val front_female: Any,
-                    val front_shiny: String,
-                    val front_shiny_female: Any
-                )
+@JsonClass(generateAdapter = true)
+data class DreamWorld(
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any
+)
 
-                data class XY(
-                    val front_default: String,
-                    val front_female: Any,
-                    val front_shiny: String,
-                    val front_shiny_female: Any
-                )
-            }
+@JsonClass(generateAdapter = true)
+data class Home(
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_female")
+    val frontShinyFemale: Any
+)
 
-            data class GenerationVii(
-                val icons: Icons,
-                val ultra-sun-ultra-moon: UltraSunUltraMoon
-            ) {
-                data class Icons(
-                    val front_default: String,
-                    val front_female: Any
-                )
+@JsonClass(generateAdapter = true)
+data class OfficialArtwork(
+    @Json(name = "front_default")
+    val frontDefault: String
+)
 
-                data class UltraSunUltraMoon(
-                    val front_default: String,
-                    val front_female: Any,
-                    val front_shiny: String,
-                    val front_shiny_female: Any
-                )
-            }
+@JsonClass(generateAdapter = true)
+data class GenerationI(
+    @Json(name = "red-blue")
+    val redBlue: RedBlue,
+    @Json(name = "yellow")
+    val yellow: Yellow
+)
 
-            data class GenerationViii(
-                val icons: Icons
-            ) {
-                data class Icons(
-                    val front_default: String,
-                    val front_female: Any
-                )
-            }
-        }
-    }
+@JsonClass(generateAdapter = true)
+data class GenerationIi(
+    @Json(name = "crystal")
+    val crystal: Crystal,
+    @Json(name = "gold")
+    val gold: Gold,
+    @Json(name = "silver")
+    val silver: Silver
+)
 
-    data class Stat(
-        val base_stat: Int,
-        val effort: Int,
-        val stat: Stat
-    ) {
-        data class Stat(
-            val name: String,
-            val url: String
-        )
-    }
+@JsonClass(generateAdapter = true)
+data class GenerationIii(
+    @Json(name = "emerald")
+    val emerald: Emerald,
+    @Json(name = "firered-leafgreen")
+    val fireredLeafgreen: FireredLeafgreen,
+    @Json(name = "ruby-sapphire")
+    val rubySapphire: RubySapphire
+)
 
-    data class Type(
-        val slot: Int,
-        val type: Type
-    ) {
-        data class Type(
-            val name: String,
-            val url: String
-        )
-    }
-}
+@JsonClass(generateAdapter = true)
+data class GenerationIv(
+    @Json(name = "diamond-pearl")
+    val diamondPearl: DiamondPearl,
+    @Json(name = "heartgold-soulsilver")
+    val heartgoldSoulsilver: HeartgoldSoulsilver,
+    @Json(name = "platinum")
+    val platinum: Platinum
+)
+
+@JsonClass(generateAdapter = true)
+data class GenerationV(
+    @Json(name = "black-white")
+    val blackWhite: BlackWhite
+)
+
+@JsonClass(generateAdapter = true)
+data class GenerationVi(
+    @Json(name = "omegaruby-alphasapphire")
+    val omegarubyAlphasapphire: OmegarubyAlphasapphire,
+    @Json(name = "x-y")
+    val xY: XY
+)
+
+@JsonClass(generateAdapter = true)
+data class GenerationVii(
+    @Json(name = "icons")
+    val icons: Icons,
+    @Json(name = "ultra-sun-ultra-moon")
+    val ultraSunUltraMoon: UltraSunUltraMoon
+)
+
+@JsonClass(generateAdapter = true)
+data class GenerationViii(
+    @Json(name = "icons")
+    val icons: IconsX
+)
+
+@JsonClass(generateAdapter = true)
+data class RedBlue(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_gray")
+    val backGray: String,
+    @Json(name = "back_transparent")
+    val backTransparent: String,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_gray")
+    val frontGray: String,
+    @Json(name = "front_transparent")
+    val frontTransparent: String
+)
+
+@JsonClass(generateAdapter = true)
+data class Yellow(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_gray")
+    val backGray: String,
+    @Json(name = "back_transparent")
+    val backTransparent: String,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_gray")
+    val frontGray: String,
+    @Json(name = "front_transparent")
+    val frontTransparent: String
+)
+
+@JsonClass(generateAdapter = true)
+data class Crystal(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "back_shiny_transparent")
+    val backShinyTransparent: String,
+    @Json(name = "back_transparent")
+    val backTransparent: String,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_transparent")
+    val frontShinyTransparent: String,
+    @Json(name = "front_transparent")
+    val frontTransparent: String
+)
+
+@JsonClass(generateAdapter = true)
+data class Gold(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_transparent")
+    val frontTransparent: String
+)
+
+@JsonClass(generateAdapter = true)
+data class Silver(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_transparent")
+    val frontTransparent: String
+)
+
+@JsonClass(generateAdapter = true)
+data class Emerald(
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_shiny")
+    val frontShiny: String
+)
+
+@JsonClass(generateAdapter = true)
+data class FireredLeafgreen(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_shiny")
+    val frontShiny: String
+)
+
+@JsonClass(generateAdapter = true)
+data class RubySapphire(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_shiny")
+    val frontShiny: String
+)
+
+@JsonClass(generateAdapter = true)
+data class DiamondPearl(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_female")
+    val backFemale: Any,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "back_shiny_female")
+    val backShinyFemale: Any,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_female")
+    val frontShinyFemale: Any
+)
+
+@JsonClass(generateAdapter = true)
+data class HeartgoldSoulsilver(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_female")
+    val backFemale: Any,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "back_shiny_female")
+    val backShinyFemale: Any,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_female")
+    val frontShinyFemale: Any
+)
+
+@JsonClass(generateAdapter = true)
+data class Platinum(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_female")
+    val backFemale: Any,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "back_shiny_female")
+    val backShinyFemale: Any,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_female")
+    val frontShinyFemale: Any
+)
+
+@JsonClass(generateAdapter = true)
+data class BlackWhite(
+    @Json(name = "animated")
+    val animated: Animated,
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_female")
+    val backFemale: Any,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "back_shiny_female")
+    val backShinyFemale: Any,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_female")
+    val frontShinyFemale: Any
+)
+
+@JsonClass(generateAdapter = true)
+data class Animated(
+    @Json(name = "back_default")
+    val backDefault: String,
+    @Json(name = "back_female")
+    val backFemale: Any,
+    @Json(name = "back_shiny")
+    val backShiny: String,
+    @Json(name = "back_shiny_female")
+    val backShinyFemale: Any,
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_female")
+    val frontShinyFemale: Any
+)
+
+@JsonClass(generateAdapter = true)
+data class OmegarubyAlphasapphire(
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_female")
+    val frontShinyFemale: Any
+)
+
+@JsonClass(generateAdapter = true)
+data class XY(
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_female")
+    val frontShinyFemale: Any
+)
+
+@JsonClass(generateAdapter = true)
+data class Icons(
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any
+)
+
+@JsonClass(generateAdapter = true)
+data class UltraSunUltraMoon(
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any,
+    @Json(name = "front_shiny")
+    val frontShiny: String,
+    @Json(name = "front_shiny_female")
+    val frontShinyFemale: Any
+)
+
+@JsonClass(generateAdapter = true)
+data class IconsX(
+    @Json(name = "front_default")
+    val frontDefault: String,
+    @Json(name = "front_female")
+    val frontFemale: Any
+)
+
+@JsonClass(generateAdapter = true)
+data class StatX(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)
+
+@JsonClass(generateAdapter = true)
+data class TypeX(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "url")
+    val url: String
+)

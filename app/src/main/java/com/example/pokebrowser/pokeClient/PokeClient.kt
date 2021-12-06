@@ -1,5 +1,6 @@
 package com.example.pokebrowser.pokeClient
 
+import GetPokemonDataResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Response
@@ -47,7 +48,7 @@ class PokeClient {
 }
 
 interface PokeClientService {
-    @GET("pokemon?limit={Limit}&offset={Offset}")
+    @GET("pokemon")
     suspend fun getPokemonRange(
         @Query("Limit") limit: Int,
         @Query("OffSet") offset: Int
