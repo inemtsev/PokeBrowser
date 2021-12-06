@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
-    android:viewportWidth="512"
-    android:viewportHeight="512"
-    android:width="512dp"
-    android:height="512dp">
-    <path
-        android:pathData="M97.4121 440.649c-1.7574 -1.653 -3.4954 -3.338 -5.2132 -5.056 -90.68455 -90.684 -90.68453 -237.713 0 -328.397 90.6841 -90.6849 379.6401 -96.7516 379.6401 -96.7516s39.442 334.4646 -51.242 425.1486c-80.54 80.54 -205.522 89.55 -296.005 27.031l72.908 -89.471 116.55 -25.163 -95.139 -9.511 60.462 -61.562 68.824 -15.077 -54.422 -16.117 54.422 -98.176 -77.41 86.828 -29.893 -42.183 10.523 69.648 -53.917 60.782 -24.993 -76.9v102.268z"
-        android:fillType="evenOdd"
-        android:fillColor="#FFFFFF" />
-</vector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:gravity="center">
+    <shape android:shape="oval">
+        <solid android:color="#5FBD58"/>
+        <size
+            android:height="800dp"
+            android:width="800dp"
+            android:viewportWidth="800"
+            android:viewportHeight="800"
+            />
+    </shape>
+</item>
+<item android:gravity="center">
+    <vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:viewportWidth="512"
+        android:viewportHeight="512"
+        android:width="512dp"
+        android:height="512dp">
+        <path
+            android:pathData="M97.4121 440.649c-1.7574 -1.653 -3.4954 -3.338 -5.2132 -5.056 -90.68455 -90.684 -90.68453 -237.713 0 -328.397 90.6841 -90.6849 379.6401 -96.7516 379.6401 -96.7516s39.442 334.4646 -51.242 425.1486c-80.54 80.54 -205.522 89.55 -296.005 27.031l72.908 -89.471 116.55 -25.163 -95.139 -9.511 60.462 -61.562 68.824 -15.077 -54.422 -16.117 54.422 -98.176 -77.41 86.828 -29.893 -42.183 10.523 69.648 -53.917 60.782 -24.993 -76.9v102.268z"
+            android:fillType="evenOdd"
+            android:fillColor="#FFFFFF" />
+    </vector>
+</item>
+</layer-list>
