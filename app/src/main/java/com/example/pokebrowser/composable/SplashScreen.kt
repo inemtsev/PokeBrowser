@@ -24,7 +24,7 @@ fun SplashScreen(navController: NavHostController, isLoadingInit: Boolean?) {
     
     LaunchedEffect(isLoadingInit) {
         if(isLoadingInit != null && !isLoadingInit) {
-            navController.navigate("main-screen")
+            navController.navigate("explore-screen")
         }
 
         scale.animateTo(
