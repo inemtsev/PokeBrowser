@@ -1,6 +1,8 @@
 package com.example.pokebrowser.viewModels
 
 import GetPokemonDataResponse
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -14,19 +16,18 @@ class PokeViewerViewModel(
     val pokeUrl: String,
     val navController: NavController
 ) : ViewModel() {
-    var pokemonData: Pokemon
+    private val _pokemonData = MutableLiveData<Pokemon>()
+    val pokemonData = _pokemonData as LiveData<Pokemon>
 
     init {
         val pokeClient = PokeClient()
         val pokeClientMapper = PokeClientResponseMapper()
 
-        var pokemonDataResponse: GetPokemonDataResponse? = null
-
         viewModelScope.launch {
             val request = async { pokeClient.getPokemonData(pokeUrl) }
-            pokemonDataResponse = request.await()
-        }
+            val pokemonDataResponse: GetPokemonDataResponse? = request.await()
 
-        pokemonData = pokeClientMapper.mapResponseToPokeDataModel(pokemonDataResponse)
+            _pokemonData.postValue(pokeClientMapper.mapResponseToPokeDataModel(pokemonDataResponse))
+        }
     }
 }

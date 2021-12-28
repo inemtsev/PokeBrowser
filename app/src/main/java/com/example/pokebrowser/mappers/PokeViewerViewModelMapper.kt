@@ -6,11 +6,11 @@ import com.example.pokebrowser.viewModels.PokeViewerViewModel
 
 class PokeViewerViewModelMapper {
     fun map(
-        mainVm: MainActivityViewModel,
+        mainActivityVm: MainActivityViewModel,
         pokeName: String,
         navController: NavController,
     ): PokeViewerViewModel {
-        val pokemonUrl = mainVm.pokemonList.first { p -> p.name == pokeName }
+        val pokemonUrl = mainActivityVm.pokemonList.first { p -> p.name == pokeName }
 
         return PokeViewerViewModel(pokemonUrl.url, navController)
     }

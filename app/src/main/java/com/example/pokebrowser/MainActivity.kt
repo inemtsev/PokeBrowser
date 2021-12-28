@@ -15,11 +15,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.pokebrowser.composable.NavigationBar
-import com.example.pokebrowser.composable.PokeBrowser
-import com.example.pokebrowser.composable.PokeViewer
-import com.example.pokebrowser.composable.SplashScreen
+import com.example.pokebrowser.composable.*
 import com.example.pokebrowser.mappers.PokeBrowserViewModelMapper
+import com.example.pokebrowser.mappers.PokeSearchViewModelMapper
 import com.example.pokebrowser.mappers.PokeViewerViewModelMapper
 import com.example.pokebrowser.ui.theme.PokeBrowserTheme
 import com.example.pokebrowser.viewModels.MainActivityViewModel
@@ -53,6 +51,7 @@ fun Navigator(vm: MainActivityViewModel, modifier: Modifier = Modifier) {
     val isInitLoading by vm.isLoadingInit.observeAsState()
     val pokeBrowserMapper by lazy { PokeBrowserViewModelMapper() }
     val pokeViewerMapper by lazy { PokeViewerViewModelMapper() }
+    val pokeSearchMapper by lazy { PokeSearchViewModelMapper() }
 
     Column(verticalArrangement = Arrangement.Top, modifier = modifier) {
         NavigationBar(
@@ -70,13 +69,26 @@ fun Navigator(vm: MainActivityViewModel, modifier: Modifier = Modifier) {
                 )
             }
             composable(route = "explore-screen") {
-                PokeBrowser(pokeBrowserMapper.map(vm, navController))
+                PokeBrowser(
+                    pokeBrowserMapper.map(
+                        mainActivityVm = vm,
+                        navController = navController
+                    )
+                )
             }
             composable(route = "view-screen/{pokeName}") { backStackEntry ->
                 PokeViewer(
                     pokeViewerMapper.map(
-                        mainVm = vm,
+                        mainActivityVm = vm,
                         pokeName = backStackEntry.arguments?.getString("pokeName") ?: "ditto",
+                        navController = navController
+                    )
+                )
+            }
+            composable(route = "search-screen") {
+                PokeSearch(
+                    pokeSearchMapper.map(
+                        mainActivityVm = vm,
                         navController = navController
                     )
                 )

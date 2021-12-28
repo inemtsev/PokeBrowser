@@ -27,15 +27,15 @@ fun NavigationBar(navController: NavHostController, isInitLoading: Boolean?, mod
         ) {
             val textModifier = Modifier.padding(start = 8.dp)
             Row(modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .clickable { navController.navigate("explore-screen") }
+                .weight(1f)
+                .clickable { navController.navigate("explore-screen") }
             ) {
                 Icon(Icons.Rounded.Home, contentDescription = "Home", tint = Color.Black)
                 Text(text = "Explore", modifier = textModifier)
             }
             Row(modifier = Modifier
                 .weight(1f)
+                .clickable { navController.navigate("search-screen") }
             ) {
                 Icon(Icons.Rounded.Search, contentDescription = "Search", tint = Color.Black)
                 Text(text = "Search", modifier = textModifier)

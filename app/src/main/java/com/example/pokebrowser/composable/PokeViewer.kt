@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -15,25 +16,35 @@ import com.example.pokebrowser.PokemonStat
 import com.example.pokebrowser.viewModels.PokeViewerViewModel
 
 @Composable
-fun PokeViewer(model: PokeViewerViewModel, modifier: Modifier = Modifier) {
-    val cardModifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
+fun PokeViewer(model: PokeViewerViewModel?, modifier: Modifier = Modifier) {
+    if(model != null) {
+        val modelState = model.pokemonData.observeAsState()
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.Start,
-        modifier = modifier
-    ) {
-        PokeBasicsCard(
-            pokemon = model.pokemonData,
-            modifier = cardModifier
-        )
-        PokeStatsCard(
-            stats = model.pokemonData.baseStats,
-            modifier = cardModifier
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+        if (modelState.value != null) {
+            val staticModelState = modelState.value
+
+            staticModelState?.let {
+                val cardModifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.Start,
+                    modifier = modifier
+                ) {
+                    PokeBasicsCard(
+                        pokemon = staticModelState,
+                        modifier = cardModifier
+                    )
+                    PokeStatsCard(
+                        stats = staticModelState.baseStats,
+                        modifier = cardModifier
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
+        }
     }
 }
 

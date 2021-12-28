@@ -42,9 +42,9 @@ class PokeClient {
             return pokeDataMap[pokemonUrl]
         }
 
-        val result = pokeClientService.getPokemonData(
-            pokemonUrl.replace("https://pokeapi.co/api/v2/pokemon/", "")
-        )
+        val requestUrl = pokemonUrl.replace("https://pokeapi.co/api/v2/pokemon/", "")
+
+        val result = pokeClientService.getPokemonData(requestUrl)
 
         if(result.isSuccessful) {
             val resultBody = result.body()
