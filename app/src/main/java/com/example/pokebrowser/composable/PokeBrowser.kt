@@ -14,11 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.example.pokebrowser.viewModels.PokeBrowserViewModel
 
 @Composable
-fun PokeBrowser(model: PokeBrowserViewModel) {
+fun PokeBrowser(model: PokeBrowserViewModel, nav: NavHostController) {
     val pokemonDataState by model.pokemonDataList.observeAsState()
 
     pokemonDataState?.let {
@@ -37,7 +38,7 @@ fun PokeBrowser(model: PokeBrowserViewModel) {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth().clickable {
-                        model.navController.navigate("view-screen/${p.name}")
+                        nav.navigate("view-screen/${p.name}")
                     }
                 ) {
                     Row(

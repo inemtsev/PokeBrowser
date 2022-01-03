@@ -1,7 +1,6 @@
 package com.example.pokebrowser.mappers
 
 import GetPokemonDataResponse
-import android.content.Context
 import com.example.pokebrowser.Pokemon
 import com.example.pokebrowser.PokemonStat
 import com.example.pokebrowser.PokemonSummary

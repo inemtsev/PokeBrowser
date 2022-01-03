@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,33 +17,36 @@ import com.example.pokebrowser.PokemonStat
 import com.example.pokebrowser.viewModels.PokeViewerViewModel
 
 @Composable
-fun PokeViewer(model: PokeViewerViewModel?, modifier: Modifier = Modifier) {
-    if(model != null) {
-        val modelState = model.pokemonData.observeAsState()
+fun PokeViewer(model: PokeViewerViewModel, modifier: Modifier = Modifier) {
+    val modelState = model.pokemonData.observeAsState()
+    val loadingState = model.isLoading.observeAsState()
 
-        if (modelState.value != null) {
-            val staticModelState = modelState.value
+    LaunchedEffect(true) {
+        model.getPokemonData()
+    }
 
-            staticModelState?.let {
-                val cardModifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
+    if (loadingState.value != true && modelState.value != null) {
+        val staticModelState = modelState.value
 
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalAlignment = Alignment.Start,
-                    modifier = modifier
-                ) {
-                    PokeBasicsCard(
-                        pokemon = staticModelState,
-                        modifier = cardModifier
-                    )
-                    PokeStatsCard(
-                        stats = staticModelState.baseStats,
-                        modifier = cardModifier
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
+        staticModelState?.let {
+            val cardModifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.Start,
+                modifier = modifier
+            ) {
+                PokeBasicsCard(
+                    pokemon = staticModelState,
+                    modifier = cardModifier
+                )
+                PokeStatsCard(
+                    stats = staticModelState.baseStats,
+                    modifier = cardModifier
+                )
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }

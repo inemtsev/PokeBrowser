@@ -1,33 +1,49 @@
 package com.example.pokebrowser.viewModels
 
-import GetPokemonDataResponse
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.pokebrowser.Pokemon
 import com.example.pokebrowser.mappers.PokeClientResponseMapper
-import com.example.pokebrowser.pokeClient.PokeClient
+import com.example.pokebrowser.repositories.PokeRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent
 
-class PokeViewerViewModel(
-    val pokeUrl: String,
-    val navController: NavController
-) : ViewModel() {
+class PokeViewerViewModel : ViewModel() {
+    private val _pokeRepo by KoinJavaComponent.inject<PokeRepository>(PokeRepository::class.java)
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading = _isLoading as LiveData<Boolean>
+
     private val _pokemonData = MutableLiveData<Pokemon>()
     val pokemonData = _pokemonData as LiveData<Pokemon>
 
-    init {
-        val pokeClient = PokeClient()
-        val pokeClientMapper = PokeClientResponseMapper()
+    private var _pokeName: String = ""
 
-        viewModelScope.launch {
-            val request = async { pokeClient.getPokemonData(pokeUrl) }
-            val pokemonDataResponse: GetPokemonDataResponse? = request.await()
+    fun getPokemonData() {
+        if (_pokeName.isNotEmpty()) {
+            _isLoading.postValue(true)
+            viewModelScope.launch {
+                val pokeUrl = _pokeRepo.getPokemonUrl(_pokeName)
+                if(pokeUrl.isNotEmpty()) {
+                    val pokeDataRequest = async { _pokeRepo.getPokemonData(pokeUrl) }
+                    val pokeDataResult = pokeDataRequest.await()
 
-            _pokemonData.postValue(pokeClientMapper.mapResponseToPokeDataModel(pokemonDataResponse))
+                    val pokeClientMapper = PokeClientResponseMapper()
+                    _pokemonData.postValue(pokeClientMapper.mapResponseToPokeDataModel(pokeDataResult))
+                    _isLoading.postValue(false)
+                }
+            }
         }
+    }
+
+    fun setPokemonName(pokeName: String) {
+        _pokeName = pokeName
+    }
+
+    fun setLoadingState(isLoading: Boolean) {
+        _isLoading.postValue(isLoading)
     }
 }

@@ -23,10 +23,6 @@ class PokeClient {
         pokeClientService = retrofit.create(PokeClientService::class.java)
     }
 
-    companion object {
-        private val pokeDataMap = mutableMapOf<String, GetPokemonDataResponse>()
-    }
-
     suspend fun getPokemonList(number: Int, offset: Int): GetPokemonListResponse? {
         val result = pokeClientService.getPokemonRange(number, offset)
 
@@ -38,21 +34,11 @@ class PokeClient {
     }
 
     suspend fun getPokemonData(pokemonUrl: String): GetPokemonDataResponse? {
-        if (pokeDataMap.containsKey(pokemonUrl)) {
-            return pokeDataMap[pokemonUrl]
-        }
-
         val requestUrl = pokemonUrl.replace("https://pokeapi.co/api/v2/pokemon/", "")
-
         val result = pokeClientService.getPokemonData(requestUrl)
 
         if(result.isSuccessful) {
-            val resultBody = result.body()
-            if (resultBody != null) {
-                pokeDataMap[pokemonUrl] = resultBody
-            }
-
-            return resultBody
+            return result.body()
         }
 
         return null

@@ -12,15 +12,19 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.pokebrowser.composable.*
-import com.example.pokebrowser.mappers.PokeBrowserViewModelMapper
-import com.example.pokebrowser.mappers.PokeSearchViewModelMapper
-import com.example.pokebrowser.mappers.PokeViewerViewModelMapper
 import com.example.pokebrowser.ui.theme.PokeBrowserTheme
 import com.example.pokebrowser.viewModels.MainActivityViewModel
+import com.example.pokebrowser.viewModels.PokeBrowserViewModel
+import com.example.pokebrowser.viewModels.PokeSearchViewModel
+import com.example.pokebrowser.viewModels.PokeViewerViewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.GlobalContext.startKoin
 
 class MainActivity : ComponentActivity() {
     private val vm: MainActivityViewModel by lazy {
@@ -28,6 +32,12 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        startKoin{
+            androidLogger()
+            androidContext(this@MainActivity)
+            modules(appDependencies)
+        }
+
         vm.getPokemonList()
         super.onCreate(savedInstanceState)
         setContent {
@@ -49,9 +59,7 @@ class MainActivity : ComponentActivity() {
 fun Navigator(vm: MainActivityViewModel, modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val isInitLoading by vm.isLoadingInit.observeAsState()
-    val pokeBrowserMapper by lazy { PokeBrowserViewModelMapper() }
-    val pokeViewerMapper by lazy { PokeViewerViewModelMapper() }
-    val pokeSearchMapper by lazy { PokeSearchViewModelMapper() }
+    val pokeViewerVm = viewModel<PokeViewerViewModel>() // reuse for efficiency
 
     Column(verticalArrangement = Arrangement.Top, modifier = modifier) {
         NavigationBar(
@@ -69,29 +77,19 @@ fun Navigator(vm: MainActivityViewModel, modifier: Modifier = Modifier) {
                 )
             }
             composable(route = "explore-screen") {
-                PokeBrowser(
-                    pokeBrowserMapper.map(
-                        mainActivityVm = vm,
-                        navController = navController
-                    )
-                )
+                val pokeBrowserVm = viewModel<PokeBrowserViewModel>()
+                PokeBrowser(model = pokeBrowserVm, nav = navController)
+
             }
             composable(route = "view-screen/{pokeName}") { backStackEntry ->
-                PokeViewer(
-                    pokeViewerMapper.map(
-                        mainActivityVm = vm,
-                        pokeName = backStackEntry.arguments?.getString("pokeName") ?: "ditto",
-                        navController = navController
-                    )
-                )
+                pokeViewerVm.setPokemonName(backStackEntry.arguments?.getString("pokeName") ?: "ditto")
+                PokeViewer(model = pokeViewerVm)
             }
             composable(route = "search-screen") {
-                PokeSearch(
-                    pokeSearchMapper.map(
-                        mainActivityVm = vm,
-                        navController = navController
-                    )
-                )
+                val pokeSearchVm = viewModel<PokeSearchViewModel>()
+                pokeViewerVm.setPokemonName("")
+                pokeViewerVm.setLoadingState(true)
+                PokeSearch(pokeSearchVm, pokeViewerVm)
             }
         }
     }

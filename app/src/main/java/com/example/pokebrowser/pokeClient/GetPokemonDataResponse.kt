@@ -369,7 +369,7 @@ data class Crystal(
     @Json(name = "back_shiny")
     val backShiny: String?,
     @Json(name = "back_shiny_transparent")
-    val backShinyTransparent: String,
+    val backShinyTransparent: String?,
     @Json(name = "back_transparent")
     val backTransparent: String?,
     @Json(name = "front_default")
