@@ -5,27 +5,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokebrowser.repositories.PokeRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.inject
 
 class MainActivityViewModel : ViewModel() {
-    private val pokeRepo: PokeRepository by KoinJavaComponent.inject(PokeRepository::class.java)
+    private val pokeRepo: PokeRepository by inject(PokeRepository::class.java)
 
     private val _isLoadingInit: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     val isLoadingInit: LiveData<Boolean> = _isLoadingInit
 
     fun getPokemonList(): Unit {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _isLoadingInit.postValue(true)
-            val response = pokeRepo.getPokemonList()
 
-            if(response != null){
-                delay(500)
-                _isLoadingInit.postValue(false)
-            } else {
-                // log this error
-            }
+            val request = async { pokeRepo.getPokemonList() }
+            request.await()
+            delay(500)
+
+            _isLoadingInit.postValue(false)
         }
     }
 }

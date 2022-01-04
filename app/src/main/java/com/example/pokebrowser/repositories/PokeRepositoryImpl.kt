@@ -38,7 +38,6 @@ class PokeRepositoryImpl : PokeRepository {
         }
 
         val result = _pokeClient.getPokemonData(url)
-
         if (result != null) {
             pokeDataMap[url] = result
             return result
@@ -46,5 +45,6 @@ class PokeRepositoryImpl : PokeRepository {
             // add log here
             throw Exception("Pokemon client (Pokemon Data) returned null")
         }
+
     }
 }

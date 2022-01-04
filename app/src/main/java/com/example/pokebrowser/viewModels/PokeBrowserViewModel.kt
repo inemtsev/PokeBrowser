@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokebrowser.PokemonSummary
 import com.example.pokebrowser.mappers.PokeClientResponseMapper
-import com.example.pokebrowser.mappers.PokeClientResponseMapperImpl
 import com.example.pokebrowser.pokeClient.GetPokemonListResponse
 import com.example.pokebrowser.repositories.PokeRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
@@ -26,19 +26,19 @@ class PokeBrowserViewModel : ViewModel() {
     private var currentPokemonPage: Int = 1
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val pokeListRequest = async { _pokeRepo.getPokemonList() }
             val pokeListResponse = pokeListRequest.await()
             _pokemonList = pokeListResponse.results
 
             val initPokeList = pokeListResponse.results.take(POKE_BROWSER_PAGE_SIZE)
-            getPokemonData(initPokeList)
+            getPokemonData(initPokeList.asSequence())
         }
 
     }
 
     fun loadPokemonData(): Unit {
-        val nextPokeList = _pokemonList
+        val nextPokeList = _pokemonList.asSequence()
             .drop(currentPokemonPage * POKE_BROWSER_PAGE_SIZE)
             .take(POKE_BROWSER_PAGE_SIZE)
 
@@ -46,13 +46,13 @@ class PokeBrowserViewModel : ViewModel() {
         currentPokemonPage++
     }
 
-    private fun getPokemonData(nextPokeList: List<GetPokemonListResponse.PokemonUrl>) {
-        viewModelScope.launch {
+    private fun getPokemonData(nextPokeList: Sequence<GetPokemonListResponse.PokemonUrl>) {
+        viewModelScope.launch(Dispatchers.IO) {
             val requests = nextPokeList.map { urlData ->
                 async {
                     _pokeRepo.getPokemonData(urlData.url)
                 }
-            }
+            }.toList()
 
             val responses = requests.awaitAll()
 

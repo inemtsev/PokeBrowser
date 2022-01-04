@@ -38,6 +38,11 @@ class PokeClientImpl(context: Context) : PokeClient {
         return OkHttpClient.Builder()
             .cache(cache)
             .addNetworkInterceptor(CacheInterceptor())
+            .callTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+            .followRedirects(true)
             .build()
     }
 

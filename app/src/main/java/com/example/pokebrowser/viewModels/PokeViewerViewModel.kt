@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pokebrowser.Pokemon
 import com.example.pokebrowser.mappers.PokeClientResponseMapper
 import com.example.pokebrowser.repositories.PokeRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
@@ -25,14 +26,17 @@ class PokeViewerViewModel : ViewModel() {
 
     fun getPokemonData() {
         if (_pokeName.isNotEmpty()) {
-            _isLoading.postValue(true)
-            viewModelScope.launch {
-                val pokeUrl = _pokeRepo.getPokemonUrl(_pokeName)
-                if(pokeUrl.isNotEmpty()) {
+            val pokeUrl = _pokeRepo.getPokemonUrl(_pokeName)
+
+            if (pokeUrl.isNotEmpty()) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    _isLoading.postValue(true)
                     val pokeDataRequest = async { _pokeRepo.getPokemonData(pokeUrl) }
                     val pokeDataResult = pokeDataRequest.await()
 
-                    _pokemonData.postValue(_pokeClientMapper.mapResponseToPokeDataModel(pokeDataResult))
+                    _pokemonData.postValue(
+                        _pokeClientMapper.mapResponseToPokeDataModel(pokeDataResult)
+                    )
                     _isLoading.postValue(false)
                 }
             }

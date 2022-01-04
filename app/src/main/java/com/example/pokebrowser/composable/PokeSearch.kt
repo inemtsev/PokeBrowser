@@ -18,7 +18,7 @@ fun PokeSearch(model: PokeSearchViewModel, viewerVm: PokeViewerViewModel) {
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var searchInput = remember { mutableStateOf(TextFieldValue()) }
+        val searchInput = remember { mutableStateOf(TextFieldValue()) }
 
         TextWithSearch(searchInput, model, viewerVm)
         PokeViewer(model = viewerVm)
