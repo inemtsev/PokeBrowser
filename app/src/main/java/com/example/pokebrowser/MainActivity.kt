@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
 fun Navigator(vm: MainActivityViewModel, modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val isInitLoading by vm.isLoadingInit.observeAsState()
-    val pokeViewerVm = viewModel<PokeViewerViewModel>() // reuse for efficiency
+    val pokeViewerVm = viewModel<PokeViewerViewModel>()
 
     Column(verticalArrangement = Arrangement.Top, modifier = modifier) {
         NavigationBar(
@@ -89,7 +89,7 @@ fun Navigator(vm: MainActivityViewModel, modifier: Modifier = Modifier) {
                 val pokeSearchVm = viewModel<PokeSearchViewModel>()
                 pokeViewerVm.setPokemonName("")
                 pokeViewerVm.setLoadingState(true)
-                PokeSearch(pokeSearchVm, pokeViewerVm)
+                PokeSearch(model = pokeSearchVm, viewerVm = pokeViewerVm)
             }
         }
     }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokebrowser.PokemonSummary
 import com.example.pokebrowser.mappers.PokeClientResponseMapper
+import com.example.pokebrowser.mappers.PokeClientResponseMapperImpl
 import com.example.pokebrowser.pokeClient.GetPokemonListResponse
 import com.example.pokebrowser.repositories.PokeRepository
 import kotlinx.coroutines.async
@@ -16,7 +17,7 @@ import org.koin.java.KoinJavaComponent.inject
 class PokeBrowserViewModel : ViewModel() {
     private val POKE_BROWSER_PAGE_SIZE = 10
     private val _pokeRepo: PokeRepository by inject(PokeRepository::class.java)
-    private val _pokeClientMapper = PokeClientResponseMapper()
+    private val _pokeClientMapper by inject<PokeClientResponseMapper>(PokeClientResponseMapper::class.java)
 
     private var _pokemonList: List<GetPokemonListResponse.PokemonUrl> = listOf()
     private val _pokemonDataList: MutableLiveData<List<PokemonSummary>> = MutableLiveData(ArrayList())

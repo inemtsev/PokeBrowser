@@ -1,7 +1,8 @@
+package com.example.pokebrowser.pokeClient
 
 import com.squareup.moshi.JsonClass
-
 import com.squareup.moshi.Json
+
 @JsonClass(generateAdapter = true)
 data class GetPokemonDataResponse(
     @Json(name = "abilities")
@@ -9,7 +10,8 @@ data class GetPokemonDataResponse(
     @Json(name = "base_experience")
     val baseExperience: Int,
     @Json(name = "forms")
-    val forms: List<Form>,
+    @Transient
+    val forms: List<Form> = listOf(),
     @Json(name = "game_indices")
     val gameIndices: List<GameIndice>,
     @Json(name = "height")
@@ -23,13 +25,15 @@ data class GetPokemonDataResponse(
     @Json(name = "location_area_encounters")
     val locationAreaEncounters: String,
     @Json(name = "moves")
-    val moves: List<Move>,
+    @Transient
+    val moves: List<Move> = listOf(),
     @Json(name = "name")
     val name: String,
     @Json(name = "order")
     val order: Int,
     @Json(name = "past_types")
-    val pastTypes: Any?,
+    @Transient
+    val pastTypes: Any? = null,
     @Json(name = "species")
     val species: Species,
     @Json(name = "sprites")
@@ -377,7 +381,7 @@ data class Crystal(
     @Json(name = "front_shiny")
     val frontShiny: String?,
     @Json(name = "front_shiny_transparent")
-    val frontShinyTransparent: String,
+    val frontShinyTransparent: String?,
     @Json(name = "front_transparent")
     val frontTransparent: String?
 )

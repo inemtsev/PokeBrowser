@@ -9,10 +9,11 @@ import com.example.pokebrowser.mappers.PokeClientResponseMapper
 import com.example.pokebrowser.repositories.PokeRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.inject
 
 class PokeViewerViewModel : ViewModel() {
-    private val _pokeRepo by KoinJavaComponent.inject<PokeRepository>(PokeRepository::class.java)
+    private val _pokeRepo by inject<PokeRepository>(PokeRepository::class.java)
+    private val _pokeClientMapper by inject<PokeClientResponseMapper>(PokeClientResponseMapper::class.java)
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading = _isLoading as LiveData<Boolean>
@@ -31,8 +32,7 @@ class PokeViewerViewModel : ViewModel() {
                     val pokeDataRequest = async { _pokeRepo.getPokemonData(pokeUrl) }
                     val pokeDataResult = pokeDataRequest.await()
 
-                    val pokeClientMapper = PokeClientResponseMapper()
-                    _pokemonData.postValue(pokeClientMapper.mapResponseToPokeDataModel(pokeDataResult))
+                    _pokemonData.postValue(_pokeClientMapper.mapResponseToPokeDataModel(pokeDataResult))
                     _isLoading.postValue(false)
                 }
             }

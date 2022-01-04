@@ -1,6 +1,6 @@
 package com.example.pokebrowser.repositories
 
-import GetPokemonDataResponse
+import com.example.pokebrowser.pokeClient.GetPokemonDataResponse
 import com.example.pokebrowser.pokeClient.GetPokemonListResponse
 
 interface PokeRepository {

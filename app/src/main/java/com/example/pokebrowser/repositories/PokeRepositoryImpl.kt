@@ -1,12 +1,13 @@
 package com.example.pokebrowser.repositories
 
-import GetPokemonDataResponse
+import com.example.pokebrowser.pokeClient.GetPokemonDataResponse
 import com.example.pokebrowser.pokeClient.GetPokemonListResponse
 import com.example.pokebrowser.pokeClient.PokeClient
+import org.koin.java.KoinJavaComponent.inject
 
 class PokeRepositoryImpl : PokeRepository {
     private val maxNumberOfPokemon = 1118
-    private val _pokeClient = PokeClient()
+    private val _pokeClient by inject<PokeClient>(PokeClient::class.java)
 
     private var pokemonList: GetPokemonListResponse? = null
     private val pokeDataMap = HashMap<String, GetPokemonDataResponse>(maxNumberOfPokemon)

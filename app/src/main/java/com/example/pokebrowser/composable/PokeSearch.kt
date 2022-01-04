@@ -20,10 +20,7 @@ fun PokeSearch(model: PokeSearchViewModel, viewerVm: PokeViewerViewModel) {
     ) {
         var searchInput = remember { mutableStateOf(TextFieldValue()) }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            TextWithSearch(searchInput, model, viewerVm)
-        }
-
+        TextWithSearch(searchInput, model, viewerVm)
         PokeViewer(model = viewerVm)
     }
 }
@@ -34,18 +31,20 @@ fun TextWithSearch(
     searchVm: PokeSearchViewModel,
     viewerVm: PokeViewerViewModel
 ) {
-    TextField(
-        value = textFieldValue.value,
-        maxLines = 1,
-        onValueChange = { textFieldValue.value = it },
-        modifier = Modifier.height(60.dp)
-    )
-    Button(
-        onClick = { searchVm.onSearchClick(viewerVm, textFieldValue.value.text) },
-        modifier = Modifier
-            .height(60.dp)
-            .padding(1.dp)
-    ) {
-        Text(text = "Search")
-    }
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            TextField(
+                value = textFieldValue.value,
+                maxLines = 1,
+                onValueChange = { textFieldValue.value = it },
+                modifier = Modifier.height(60.dp)
+            )
+            Button(
+                onClick = { searchVm.onSearchClick(viewerVm, textFieldValue.value.text) },
+                modifier = Modifier
+                    .height(60.dp)
+                    .padding(1.dp)
+            ) {
+                Text(text = "Search")
+            }
+        }
 }

@@ -30,7 +30,7 @@ fun NavigationBar(navController: NavHostController, isInitLoading: Boolean?, mod
                 .weight(1f)
                 .clickable { navController.navigate("explore-screen") }
             ) {
-                Icon(Icons.Rounded.Home, contentDescription = "Home", tint = Color.Black)
+                Icon(Icons.Rounded.Home, contentDescription = "com.example.pokebrowser.pokeClient.Home", tint = Color.Black)
                 Text(text = "Explore", modifier = textModifier)
             }
             Row(modifier = Modifier

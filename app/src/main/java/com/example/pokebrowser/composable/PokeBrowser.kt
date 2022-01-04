@@ -50,7 +50,7 @@ fun PokeBrowser(model: PokeBrowserViewModel, nav: NavHostController) {
                     ) {
                         Image(
                             painter = pokeImagePainter,
-                            contentDescription = "Pokemon name"
+                            contentDescription = p.name
                         )
                         Text(
                             text = p.name.replaceFirstChar { c -> c.uppercase() },

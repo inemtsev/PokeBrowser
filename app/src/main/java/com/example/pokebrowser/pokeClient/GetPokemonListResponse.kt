@@ -2,7 +2,9 @@ package com.example.pokebrowser.pokeClient
 
 data class GetPokemonListResponse(
     val count: Int,
+    @Transient
     val next: String? = null,
+    @Transient
     val previous: String? = null,
     val results: List<PokemonUrl>
 ) {

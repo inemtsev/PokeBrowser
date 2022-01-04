@@ -17,7 +17,7 @@ private val LightColorPalette = lightColors(
     primaryVariant = Purple700,
     secondary = Teal200
 
-    /* Other default colors to override
+    /* com.example.pokebrowser.pokeClient.Other default colors to override
     background = Color.White,
     surface = Color.White,
     onPrimary = Color.White,
