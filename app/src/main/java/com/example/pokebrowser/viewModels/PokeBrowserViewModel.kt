@@ -19,7 +19,7 @@ class PokeBrowserViewModel : ViewModel() {
     private val _pokeRepo: PokeRepository by inject(PokeRepository::class.java)
     private val _pokeClientMapper by inject<PokeClientResponseMapper>(PokeClientResponseMapper::class.java)
 
-    private var _pokemonList: List<GetPokemonListResponse.PokemonUrl> = listOf()
+    private var _pokemonList: Sequence<GetPokemonListResponse.PokemonUrl> = sequenceOf()
     private val _pokemonDataList: MutableLiveData<List<PokemonSummary>> = MutableLiveData(ArrayList())
     val pokemonDataList: LiveData<List<PokemonSummary>> = _pokemonDataList
 
@@ -29,16 +29,16 @@ class PokeBrowserViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val pokeListRequest = async { _pokeRepo.getPokemonList() }
             val pokeListResponse = pokeListRequest.await()
-            _pokemonList = pokeListResponse.results
+            _pokemonList = pokeListResponse.results.asSequence()
 
-            val initPokeList = pokeListResponse.results.take(POKE_BROWSER_PAGE_SIZE)
-            getPokemonData(initPokeList.asSequence())
+            val initPokeList = _pokemonList.take(POKE_BROWSER_PAGE_SIZE)
+            getPokemonData(initPokeList)
         }
 
     }
 
     fun loadPokemonData(): Unit {
-        val nextPokeList = _pokemonList.asSequence()
+        val nextPokeList = _pokemonList
             .drop(currentPokemonPage * POKE_BROWSER_PAGE_SIZE)
             .take(POKE_BROWSER_PAGE_SIZE)
 
