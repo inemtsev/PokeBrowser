@@ -19,13 +19,13 @@ import coil.compose.rememberImagePainter
 import com.example.pokebrowser.viewModels.PokeBrowserViewModel
 
 @Composable
-fun PokeBrowser(model: PokeBrowserViewModel, nav: NavHostController) {
+fun PokeBrowser(model: PokeBrowserViewModel, nav: NavHostController, modifier: Modifier = Modifier) {
     val pokemonDataState by model.pokemonDataList.observeAsState()
 
     pokemonDataState?.let {
         val staticState = pokemonDataState ?: listOf()
 
-        LazyColumn() {
+        LazyColumn(modifier = modifier) {
             itemsIndexed(staticState) { i, p ->
                 if (i == staticState.lastIndex) {
                     model.loadPokemonData()

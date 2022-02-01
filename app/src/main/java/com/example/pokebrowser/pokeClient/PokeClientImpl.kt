@@ -59,7 +59,7 @@ class PokeClientImpl(context: Context) : PokeClient {
     override suspend fun getPokemonList(number: Int, offset: Int): GetPokemonListResponse? {
         val result = pokeClientService.getPokemonRange(number, offset)
 
-        logCacheHits(result)
+        //logCacheHits(result)
 
         if(result.isSuccessful) {
             return result.body()
@@ -72,7 +72,7 @@ class PokeClientImpl(context: Context) : PokeClient {
         val requestUrl = pokemonUrl.replace("https://pokeapi.co/api/v2/pokemon/", "")
         val result = pokeClientService.getPokemonData(requestUrl)
 
-        logCacheHits(result)
+        //logCacheHits(result)
 
         if(result.isSuccessful) {
             return result.body()

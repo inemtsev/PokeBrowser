@@ -14,8 +14,15 @@ import org.koin.java.KoinJavaComponent.inject
 class MainActivityViewModel : ViewModel() {
     private val pokeRepo: PokeRepository by inject(PokeRepository::class.java)
 
-    private val _isLoadingInit: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    private val _isLoadingInit: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoadingInit: LiveData<Boolean> = _isLoadingInit
+
+    private val _topBarTitle: MutableLiveData<String> = MutableLiveData("Explore")
+    val topBarTitle: LiveData<String> = _topBarTitle
+
+    fun updateTopBarTitle(newTitle: String) {
+        _topBarTitle.postValue(newTitle)
+    }
 
     fun getPokemonList(): Unit {
         viewModelScope.launch(Dispatchers.IO) {
